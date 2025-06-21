@@ -1,83 +1,137 @@
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, TextInput, View, TouchableOpacity, Dimensions } from 'react-native';
+import { useState,  } from 'react';
+
+
+let estados = {
+  valorDisplay:'',
+  resultado:0,
+  operado:false,
+  ponto:false
+}
 
 export default function Calculadora() {
+
+
+
+  const [vlrDisplay, setVlrDisplay] = useState(estados.valorDisplay);
+  const [vlrRes, setVlrRes] = useState(estados.resultado);
+
+  const addDigito = (digito) => {
+    estados.valorDisplay = estados.valorDisplay + digito
+    setVlrDisplay(estados.valorDisplay)
+    setVlrRes(estados.resultado)
+    estados.operado = false
+  }
+
+  const limparTela = () => {
+    estados = {
+    valorDisplay:'',
+    resultado:0,
+    operado:false,
+    ponto:false
+    }
+    setVlrDisplay(estados.valorDisplay)
+    setVlrRes(estados.resultado)
+  }
+
+  const operacao = (tecla) => {
+    if(tecla==' AC '){
+      limparTela()
+      return
+    }
+    if(tecla==' DEL ')
+      estados.valorDisplay = vlrDisplay.substring(0,(vlrDisplay.length-1))
+      setVlrDisplay(estados.valorDisplay)
+      return
+  }
+  // try{
+  //   estados.resultado=eval(estados.valorDisplay)
+  //   estados.operado = true
+  //   setVlrRes(estados.resultado)
+  // }catch{
+  //   estados.resultado=eval('erro')
+  //   estados.operado = true
+  //   setVlrRes(estados.resultado)
+  // }
+
+
   return (
     <View style={styles.areatotal}>
-
       <View style={styles.areacalculo}>
         <View style={styles.areahistorico}>
           <Text style={styles.historicoTexto}>Histórico</Text>
         </View>
         <View style={styles.areaexpressao}>
-          <Text style={styles.expressaoTexto}>Expressão</Text>
+          <Text style={styles.expressaoTexto}> {vlrDisplay}</Text>
+
         </View>
       </View>
-
+    
       <View style={styles.areateclas}>
         <View style={styles.arealinha}>
-          <TouchableOpacity style={[styles.areabotao, styles.areabotaoOperador]}>
-            <Text style={styles.textoBotao}>AC</Text>
+          <TouchableOpacity onPress={() => {operacao(' AC ')}} style={[styles.areabotao, styles.areabotaoOperador]}>
+            <Text style={styles.textoBotao}> AC </Text>
           </TouchableOpacity>
-          <TouchableOpacity style={[styles.areabotao, styles.areabotaoOperador]}>
-            <Text style={styles.textoBotao}>DEL</Text>
+          <TouchableOpacity onPress={() => {operacao(' DEL ')}} style={[styles.areabotao, styles.areabotaoOperador]}>
+            <Text style={styles.textoBotao}> DEL </Text>
           </TouchableOpacity>
-          <TouchableOpacity style={[styles.areabotao, styles.areabotaoOperador]}>
+          <TouchableOpacity onPress={() => {addDigito('%')}} style={[styles.areabotao, styles.areabotaoOperador]}>
             <Text style={styles.textoBotao}>%</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={[styles.areabotao, styles.areabotaoOperador]}>
+          <TouchableOpacity onPress={() => {addDigito('/')}} style={[styles.areabotao, styles.areabotaoOperador]}>
             <Text style={styles.textoBotao}>/</Text>
           </TouchableOpacity>
         </View>
         <View style={styles.arealinha}>
-          <TouchableOpacity style={styles.areabotao}>
+          <TouchableOpacity onPress={() => {addDigito('7')}} style={styles.areabotao}>
             <Text style={styles.textoBotao}>7</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.areabotao}>
+          <TouchableOpacity onPress={() => {addDigito('8')}} style={styles.areabotao}>
             <Text style={styles.textoBotao}>8</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.areabotao}>
+          <TouchableOpacity onPress={() => {addDigito('9')}} style={styles.areabotao}>
             <Text style={styles.textoBotao}>9</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={[styles.areabotao, styles.areabotaoOperador]}>
+          <TouchableOpacity onPress={() => {addDigito('*')}} style={[styles.areabotao, styles.areabotaoOperador]}>
             <Text style={styles.textoBotao}>X</Text>
           </TouchableOpacity>
         </View>
         <View style={styles.arealinha}>
-          <TouchableOpacity style={styles.areabotao}>
+          <TouchableOpacity onPress={() => {addDigito('4')}} style={styles.areabotao}>
             <Text style={styles.textoBotao}>4</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.areabotao}>
+          <TouchableOpacity onPress={() => {addDigito('5')}} style={styles.areabotao}>
             <Text style={styles.textoBotao}>5</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.areabotao}>
+          <TouchableOpacity onPress={() => {addDigito('6')}} style={styles.areabotao}>
             <Text style={styles.textoBotao}>6</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={[styles.areabotao, styles.areabotaoOperador]}>
+          <TouchableOpacity onPress={() => {addDigito('-')}} style={[styles.areabotao, styles.areabotaoOperador]}>
             <Text style={styles.textoBotao}>-</Text>
           </TouchableOpacity>
         </View>
         <View style={styles.arealinha}>
-          <TouchableOpacity style={styles.areabotao}>
-            <Text style={styles.textoBotao}>1</Text>
+          <TouchableOpacity onPress={() => {addDigito('1')}} style={styles.areabotao}>
+            <Text  style={styles.textoBotao}>1</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.areabotao}>
+          <TouchableOpacity onPress={() => {addDigito('2')}} style={styles.areabotao}>
             <Text style={styles.textoBotao}>2</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.areabotao}>
+          <TouchableOpacity onPress={() => {addDigito('3')}} style={styles.areabotao}>
             <Text style={styles.textoBotao}>3</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={[styles.areabotao, styles.areabotaoOperador]}>
+          <TouchableOpacity onPress={() => {addDigito('+')}} style={[styles.areabotao, styles.areabotaoOperador]}>
             <Text style={styles.textoBotao}>+</Text>
           </TouchableOpacity>
         </View>
         <View style={styles.arealinha}>
-          <TouchableOpacity style={styles.areabotao}>
+          <TouchableOpacity onPress={() => {addDigito('0')}} style={styles.areabotao}>
             <Text style={styles.textoBotao}>0</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.areabotao}>
+          <TouchableOpacity onPress={() => {addDigito('.')}} style={styles.areabotao}>
             <Text style={styles.textoBotao}>.</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={[styles.areabotao, styles.areabotaoOperador]}>
+          <TouchableOpacity  style={[styles.areabotao, styles.areabotaoOperador]}>
             <Text style={styles.textoBotao}>+/-</Text>
           </TouchableOpacity>
           <TouchableOpacity style={[styles.areabotao, styles.areabotaoIgual]}>
@@ -151,6 +205,7 @@ const styles = StyleSheet.create({
     height: 60,
     backgroundColor: '#f2e9e4',
     elevation: 2,
+    
   },
   areabotaoOperador: {
     backgroundColor: 'rgba(255, 255, 255, 0.5)',

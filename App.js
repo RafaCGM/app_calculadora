@@ -10,11 +10,14 @@ const Stack = createNativeStackNavigator();
 
 export default function App() {
   return (
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName='CalculadoraCientifica'>
-        <Stack.Screen name='Calculadora' component={Calculadora}/>
-        <Stack.Screen name='CalculadoraCientifica' component={CalculadoraCientifica}/>
-      </Stack.Navigator>
-    </NavigationContainer>
+    // <NavigationContainer>
+    //   <Stack.Navigator initialRouteName='CalculadoraCientifica'>
+    //     <Stack.Screen name='Calculadora' component={Calculadora}/>
+    //     <Stack.Screen name='CalculadoraCientifica' component={CalculadoraCientifica}/>
+    //   </Stack.Navigator>
+    // </NavigationContainer>
+
+    <Calculadora />
+
   );
 }
