@@ -1,9 +1,9 @@
 import { StyleSheet, Text, TextInput, View, TouchableOpacity, Dimensions } from 'react-native';
-import { useState,  } from 'react';
+import { useState } from 'react';
 
 
 let estados = {
-  valorDisplay:'',
+  valorTela:'',
   resultado:0,
   operado:false,
   ponto:false
@@ -11,55 +11,66 @@ let estados = {
 
 export default function Calculadora() {
 
-
-
-  const [vlrDisplay, setVlrDisplay] = useState(estados.valorDisplay);
+  const [vlrDisplay, setVlrDisplay] = useState(estados.valorTela);
   const [vlrRes, setVlrRes] = useState(estados.resultado);
 
+
   const addDigito = (digito) => {
-    estados.valorDisplay = estados.valorDisplay + digito
-    setVlrDisplay(estados.valorDisplay)
+    if(digito == '+' || digito == '-' || digito == '/' || digito == '*'){
+      estados.ponto = false
+    }
+
+    if(digito == '.' && !estados.ponto){
+      estados.ponto = true
+      estados.operado = false
+    }else if(digito == '.' && estados.ponto){
+      return
+    }
+
+    if((digito == '+' || digito == '-' || digito == '/' || digito == '*') && estados.operado){
+      estados.valorTela = estados.resultado
+      estados.resultado = estados.valorTela
+    }
+
+    estados.valorTela = estados.valorTela + digito
+    setVlrDisplay(estados.valorTela)
     setVlrRes(estados.resultado)
     estados.operado = false
   }
-
+  // AC
   const limparTela = () => {
     estados = {
-    valorDisplay:'',
+    valorTela:'',
     resultado:0,
     operado:false,
     ponto:false
     }
-    setVlrDisplay(estados.valorDisplay)
+    setVlrDisplay(estados.valorTela)
     setVlrRes(estados.resultado)
   }
-
+  // AC | DEL | RESULTADO(=)
   const operacao = (tecla) => {
     if(tecla==' AC '){
       limparTela()
       return
     }
-    if(tecla==' DEL ')
-      estados.valorDisplay = vlrDisplay.substring(0,(vlrDisplay.length-1))
-      setVlrDisplay(estados.valorDisplay)
+    if(tecla==' DEL '){
+      estados.valorTela = vlrDisplay.substring(0,(vlrDisplay.length-1))
+      setVlrDisplay(estados.valorTela)
       return
+    }
+    if(tecla == '='){
+      estados.resultado = eval(estados.valorTela)
+      estados.operado = true
+      setVlrRes(estados.resultado)
+    }
   }
-  // try{
-  //   estados.resultado=eval(estados.valorDisplay)
-  //   estados.operado = true
-  //   setVlrRes(estados.resultado)
-  // }catch{
-  //   estados.resultado=eval('erro')
-  //   estados.operado = true
-  //   setVlrRes(estados.resultado)
-  // }
-
 
   return (
     <View style={styles.areatotal}>
       <View style={styles.areacalculo}>
         <View style={styles.areahistorico}>
-          <Text style={styles.historicoTexto}>Histórico</Text>
+          <Text style={styles.historicoTexto}>{vlrRes}</Text>
         </View>
         <View style={styles.areaexpressao}>
           <Text style={styles.expressaoTexto}> {vlrDisplay}</Text>
@@ -75,9 +86,12 @@ export default function Calculadora() {
           <TouchableOpacity onPress={() => {operacao(' DEL ')}} style={[styles.areabotao, styles.areabotaoOperador]}>
             <Text style={styles.textoBotao}> DEL </Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => {addDigito('%')}} style={[styles.areabotao, styles.areabotaoOperador]}>
+
+          {/* alterar essa daqui ⬇️⬇️⬇️  */}
+          <TouchableOpacity style={[styles.areabotao, styles.areabotaoOperador]}>
             <Text style={styles.textoBotao}>%</Text>
           </TouchableOpacity>
+
           <TouchableOpacity onPress={() => {addDigito('/')}} style={[styles.areabotao, styles.areabotaoOperador]}>
             <Text style={styles.textoBotao}>/</Text>
           </TouchableOpacity>
@@ -131,10 +145,13 @@ export default function Calculadora() {
           <TouchableOpacity onPress={() => {addDigito('.')}} style={styles.areabotao}>
             <Text style={styles.textoBotao}>.</Text>
           </TouchableOpacity>
-          <TouchableOpacity  style={[styles.areabotao, styles.areabotaoOperador]}>
+
+          {/* alterar essa daqui ⬇️⬇️⬇️  */}
+          <TouchableOpacity  style={[styles.areabotao, styles.areabotaoOperador]}> 
             <Text style={styles.textoBotao}>+/-</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={[styles.areabotao, styles.areabotaoIgual]}>
+          
+          <TouchableOpacity onPress={() => {operacao('=')}} style={[styles.areabotao, styles.areabotaoIgual]}>
             <Text style={styles.textoBotao}>=</Text>
           </TouchableOpacity>
         </View>
