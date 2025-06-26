@@ -1,4 +1,4 @@
-import { StyleSheet, Text, TextInput, View, TouchableOpacity, Dimensions } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, FlatList } from 'react-native';
 import { useState } from 'react';
 
 
@@ -13,7 +13,7 @@ export default function Calculadora() {
 
   const [vlrDisplay, setVlrDisplay] = useState(estados.valorTela);
   const [vlrRes, setVlrRes] = useState(estados.resultado);
-
+  // const [historico, setHistorico] = useState([]);
 
   const addDigito = (digito) => {
     if(digito == '+' || digito == '-' || digito == '/' || digito == '*'){
@@ -31,7 +31,7 @@ export default function Calculadora() {
       estados.valorTela = estados.resultado
       estados.resultado = estados.valorTela
     }
-
+    
     estados.valorTela = estados.valorTela + digito
     setVlrDisplay(estados.valorTela)
     setVlrRes(estados.resultado)
@@ -48,7 +48,7 @@ export default function Calculadora() {
     setVlrDisplay(estados.valorTela)
     setVlrRes(estados.resultado)
   }
-  // AC | DEL | RESULTADO(=)
+  // AC | DEL | % | +/- | RESULTADO(=)
   const operacao = (tecla) => {
     if(tecla==' AC '){
       limparTela()
@@ -59,9 +59,18 @@ export default function Calculadora() {
       setVlrDisplay(estados.valorTela)
       return
     }
+    if( tecla == '%'){
+      estados.valorTela = eval(estados.valorTela / 100)
+      setVlrDisplay(estados.valorTela)
+    }
+    if( tecla == ' +/- '){
+      estados.valorTela = eval(estados.valorTela * -1)
+      setVlrDisplay(estados.valorTela)
+    }
     if(tecla == '='){
       estados.resultado = eval(estados.valorTela)
       estados.operado = true
+      // setHistorico([...historico]);
       setVlrRes(estados.resultado)
     }
   }
@@ -70,6 +79,10 @@ export default function Calculadora() {
     <View style={styles.areatotal}>
       <View style={styles.areacalculo}>
         <View style={styles.areahistorico}>
+          {/* <FlatList data={historico} 
+            keyExtractor={(item, index) => index.toString()}
+            renderItem={({ item }) => <Text st>{item}</Text>}
+          /> */}
           <Text style={styles.historicoTexto}>{vlrRes}</Text>
         </View>
         <View style={styles.areaexpressao}>
@@ -88,7 +101,7 @@ export default function Calculadora() {
           </TouchableOpacity>
 
           {/* alterar essa daqui ⬇️⬇️⬇️  */}
-          <TouchableOpacity style={[styles.areabotao, styles.areabotaoOperador]}>
+          <TouchableOpacity onPress={() => {operacao('%')}} style={[styles.areabotao, styles.areabotaoOperador]}>
             <Text style={styles.textoBotao}>%</Text>
           </TouchableOpacity>
 
@@ -147,12 +160,13 @@ export default function Calculadora() {
           </TouchableOpacity>
 
           {/* alterar essa daqui ⬇️⬇️⬇️  */}
-          <TouchableOpacity  style={[styles.areabotao, styles.areabotaoOperador]}> 
+          <TouchableOpacity onPress={() => {operacao(' +/- ')}} style={[styles.areabotao, styles.areabotaoOperador]}> 
             <Text style={styles.textoBotao}>+/-</Text>
           </TouchableOpacity>
           
           <TouchableOpacity onPress={() => {operacao('=')}} style={[styles.areabotao, styles.areabotaoIgual]}>
             <Text style={styles.textoBotao}>=</Text>
+            
           </TouchableOpacity>
         </View>
       </View>

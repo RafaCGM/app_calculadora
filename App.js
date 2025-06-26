@@ -1,23 +1,20 @@
 import * as React from 'react';
 
 import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { createDrawerNavigator } from '@react-navigation/drawer';
 
 import Calculadora from './src/screens/Calculadora';
 import CalculadoraCientifica from './src/screens/CalculadoraCientifica';
 
-const Stack = createNativeStackNavigator();
+const Drawer = createDrawerNavigator();
 
 export default function App() {
   return (
-    // <NavigationContainer>
-    //   <Stack.Navigator initialRouteName='CalculadoraCientifica'>
-    //     <Stack.Screen name='Calculadora' component={Calculadora}/>
-    //     <Stack.Screen name='CalculadoraCientifica' component={CalculadoraCientifica}/>
-    //   </Stack.Navigator>
-    // </NavigationContainer>
-
-    <Calculadora />
-
+    <NavigationContainer>
+      <Drawer.Navigator initialRouteName='Calculadora'>
+        <Drawer.Screen name='Calculadora' component={Calculadora}/>
+        <Drawer.Screen name='CalculadoraCientifica' component={CalculadoraCientifica}/>
+      </Drawer.Navigator>
+    </NavigationContainer>
   );
 }
