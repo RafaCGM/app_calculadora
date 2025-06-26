@@ -1,7 +1,6 @@
 import { StyleSheet, Text, View, TouchableOpacity, FlatList } from 'react-native';
 import { useState } from 'react';
 
-
 let estados = {
   valorTela:'',
   resultado:0,
@@ -13,7 +12,7 @@ export default function Calculadora() {
 
   const [vlrDisplay, setVlrDisplay] = useState(estados.valorTela);
   const [vlrRes, setVlrRes] = useState(estados.resultado);
-  // const [historico, setHistorico] = useState([]);
+  const [historico, setHistorico] = useState([]);
 
   const addDigito = (digito) => {
     if(digito == '+' || digito == '-' || digito == '/' || digito == '*'){
@@ -68,21 +67,22 @@ export default function Calculadora() {
       setVlrDisplay(estados.valorTela)
     }
     if(tecla == '='){
-      estados.resultado = eval(estados.valorTela)
-      estados.operado = true
-      // setHistorico([...historico]);
-      setVlrRes(estados.resultado)
+      estados.resultado = eval(estados.valorTela);
+      estados.operado = true;
+      setHistorico((prevHistorico) => [...prevHistorico, estados.valorTela + " = " + estados.resultado]); // Adiciona o resultado ao histórico
+      setVlrRes(estados.resultado);
     }
+
   }
 
   return (
     <View style={styles.areatotal}>
       <View style={styles.areacalculo}>
         <View style={styles.areahistorico}>
-          {/* <FlatList data={historico} 
+          <FlatList data={historico} 
             keyExtractor={(item, index) => index.toString()}
-            renderItem={({ item }) => <Text st>{item}</Text>}
-          /> */}
+            renderItem={({ item }) => <Text style={styles.historicoTexto}>{item}</Text>}
+          /> 
           <Text style={styles.historicoTexto}>{vlrRes}</Text>
         </View>
         <View style={styles.areaexpressao}>
